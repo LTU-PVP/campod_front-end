@@ -1,0 +1,132 @@
+header {
+  background-color: #ffffff;
+  padding-block: 1rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #007aff;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.search-form {
+  margin-block: 1rem 0;
+}
+
+.search-form input {
+  background-color: #f5f5f7;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 20px;
+  padding: 1rem;
+  margin-block: 0;
+  transition: border-color 0.2s ease;
+  color: #1d1d1f;
+}
+
+.search-form input:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+.search-form input::placeholder {
+  color: #86868b;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding-left: 2.5rem;
+  background-color: #f5f5f7;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  font-size: 20px;
+  padding-block: 1rem;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+  color: #1d1d1f;
+}
+
+.search-input-wrapper input:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #86868b;
+}
+
+.search-input-wrapper .search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: #86868b;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.search-input-wrapper input:focus + .search-icon {
+  color: #10b981;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: 5rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding-inline: 8rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  header {
+    background-color: #161618;
+    border-bottom: 1px solid #2b2c31;
+  }
+
+  .search-form input {
+    background-color: #1d1d1f;
+    color: whitesmoke;
+    border-color: #2b2c31;
+  }
+
+  .search-input-wrapper input::placeholder {
+    color: #86868b;
+  }
+
+  .search-input-wrapper .search-icon {
+    color: #86868b;
+  }
+
+  .search-input-wrapper input:focus + .search-icon {
+    color: #10b981;
+  }
+}

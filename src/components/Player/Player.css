@@ -1,0 +1,71 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 2rem;
+  height: var(--player-height);
+  border-top: 1px solid #e5e5e5;
+  background-color: #ffffff;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* opacity: 0.95; */
+}
+
+.player-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.player-control {
+  cursor: pointer;
+  user-select: none;
+  font-size: 44px;
+  transition: transform 0.1s ease;
+}
+
+.player-control:hover {
+  transform: scale(1.1);
+}
+
+.player-control.player-control-play-pause {
+  font-size: 64px;
+}
+
+.progress-container {
+  width: 100%;
+  height: 4px;
+  background-color: #e5e5e5;
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #059666;
+  transition: width 0.1s linear;
+}
+
+.time-display {
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: #666;
+  min-width: 45px;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .player {
+    background-color: #161618;
+    border-top: 1px solid #2b2c31;
+  }
+
+  .progress-container {
+    background-color: #161618;
+  }
+}

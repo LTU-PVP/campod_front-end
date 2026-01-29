@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Mozilla+Text:wght@200..700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  --player-height: 140px;
+}
+
+body {
+  width: 100%;
+  background-color: #f4f5f7;
+  font-family: "Mozilla Text", sans-serif;
+  color: #1f2023;
+}
+
+.container {
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: 5rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding-inline: 8rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #131315;
+    color: whitesmoke;
+  }
+}

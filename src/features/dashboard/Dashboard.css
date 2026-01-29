@@ -1,0 +1,4 @@
+#dashboard {
+  padding-block-start: 2rem;
+  padding-block-end: calc(var(--player-height) + 2rem);
+}

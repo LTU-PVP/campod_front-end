@@ -1,0 +1,7 @@
+.shows-grid {
+  padding-block: 1rem 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
