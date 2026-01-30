@@ -1,11 +1,12 @@
-import type { ReactElement } from "react";
+import { Suspense, type ReactElement } from "react";
 import { ShowCard } from "../../../components/ShowCard/ShowCard";
+import { Await } from "react-router";
 import type { Show } from "../../../types/show";
 
-type CollectionSectionProps = {
+interface CollectionSectionProps {
   title: string;
-  items: Show[];
-};
+  items: Promise<Show[]>;
+}
 
 export const CollectionSection = ({
   title,
@@ -17,11 +18,20 @@ export const CollectionSection = ({
       id={`collection-${title.toLowerCase().replace(/\s+/g, "-")}`}
     >
       <h2>{title}</h2>
-      <div className="shows-grid">
-        {items.map((item) => (
-          <ShowCard key={item.id} {...item} />
-        ))}
-      </div>
+      <Suspense fallback={<div>Loading {title}...</div>}>
+        <Await
+          resolve={items}
+          errorElement={<p>Error loading shows. Please try again later.</p>}
+        >
+          {(shows) => (
+            <div className="shows-grid">
+              {shows.map((show) => (
+                <ShowCard key={show.id} show={show} />
+              ))}
+            </div>
+          )}
+        </Await>
+      </Suspense>
     </section>
   );
 };

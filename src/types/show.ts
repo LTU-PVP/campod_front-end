@@ -1,9 +1,6 @@
 export interface Show {
-  id: string;
-  title: string;
-  author: string;
+  id: number;
+  name: string;
   description: string;
-  category: string;
-  episodeCount: number;
-  image: string;
+  creator_name: string | null;
 }
