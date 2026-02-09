@@ -1,4 +1,4 @@
-import type { Show } from "../types/show";
+import type { PodcastDetailResponse, Show } from "../types/show";
 
 const BASE_URL = "http://localhost:5001";
 
@@ -18,4 +18,4 @@ const request = async <T>(
 
 export const getCollections = () => request<Show[]>("/collections");
 export const getCollection = (id: number) =>
-  request<Show>(`/collections/${id}`);
+  request<PodcastDetailResponse>(`/collections/${id}`);

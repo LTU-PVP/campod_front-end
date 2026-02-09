@@ -1,3 +1,9 @@
+.show-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .show-card {
   background-color: #ffffff;
   border-radius: 10px;

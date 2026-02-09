@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 export const Player = (): ReactElement => {
-  const progressPercent = 25;
+  const progressPercent = 0;
 
   return (
     <>
