@@ -1,15 +1,25 @@
-import type { CollectionLoader, CollectionsLoader } from "../../loaders";
+import type { CollectionLoader } from "../../loaders";
 import { Suspense, type ReactElement } from "react";
-import { Await, useLoaderData } from "react-router";
+import { Await, useLoaderData, useNavigate } from "react-router";
 import type { PodcastDetailResponse } from "../../types/show";
 
 export const Podcast = (): ReactElement => {
   const { collection } = useLoaderData<CollectionLoader>();
 
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       <header id="podcast-header">
-        <div className="container">
+        <div
+          className="container"
+          onClick={handleBack}
+          style={{ cursor: "pointer" }}
+        >
           <span className="material-symbols-outlined">chevron_left</span>Back
         </div>
       </header>
@@ -31,12 +41,18 @@ export const Podcast = (): ReactElement => {
                   </article>
                 </div>
                 <div className="podcast-episodes-container">
-                  <h2>Episodes ({episodes.length})</h2>
+                  <h2>Episodes</h2>
                   <ul className="episode-list">
                     {episodes.map((episode) => (
                       <li key={episode.id} className="episode-item">
-                        <h3>{episode.title}</h3>
-                        <p>{episode.description}</p>
+                        <span className="material-symbols-outlined play-icon">
+                          play_circle
+                        </span>
+
+                        <div className="episode-content">
+                          <h3>{episode.title}</h3>
+                          <p>{episode.description}</p>
+                        </div>
                       </li>
                     ))}
                   </ul>
