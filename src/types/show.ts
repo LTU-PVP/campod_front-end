@@ -12,6 +12,7 @@ export interface Episode {
   description: string;
   file_path: string;
   title: string;
+  imageUrl: string | null;
 }
 
 export interface PodcastDetailResponse {

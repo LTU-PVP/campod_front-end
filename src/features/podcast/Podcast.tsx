@@ -2,11 +2,14 @@ import type { CollectionLoader } from "../../loaders";
 import { Suspense, type ReactElement } from "react";
 import { Await, useLoaderData, useNavigate } from "react-router";
 import type { PodcastDetailResponse } from "../../types/show";
+import { usePlayerStore } from "../../store/usePlayerStore";
 
 export const Podcast = (): ReactElement => {
   const { collection } = useLoaderData<CollectionLoader>();
 
   const navigate = useNavigate();
+
+  const setEpisode = usePlayerStore((state) => state.setEpisode);
 
   const handleBack = () => {
     navigate(-1);
@@ -45,7 +48,10 @@ export const Podcast = (): ReactElement => {
                   <ul className="episode-list">
                     {episodes.map((episode) => (
                       <li key={episode.id} className="episode-item">
-                        <span className="material-symbols-outlined play-icon">
+                        <span
+                          className="material-symbols-outlined play-icon"
+                          onClick={() => setEpisode(episode)}
+                        >
                           play_circle
                         </span>
 
