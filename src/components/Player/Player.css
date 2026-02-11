@@ -108,9 +108,25 @@
 }
 
 @media (max-width: 768px) {
+  .player {
+    padding: 1rem 0.5rem;
+    height: auto;
+    min-height: 80px;
+  }
+  .player-avatar {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 @media (max-width: 480px) {
+  .player-info {
+    flex: 0 1 auto;
+  }
+
+  .player-controls-group {
+    gap: 8px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

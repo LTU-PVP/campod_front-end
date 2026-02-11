@@ -9,7 +9,8 @@ export const Podcast = (): ReactElement => {
 
   const navigate = useNavigate();
 
-  const setEpisode = usePlayerStore((state) => state.setEpisode);
+  const { currentEpisode, isPlaying, setEpisode, togglePlay } =
+    usePlayerStore();
 
   const handleBack = () => {
     navigate(-1);
@@ -46,21 +47,37 @@ export const Podcast = (): ReactElement => {
                 <div className="podcast-episodes-container">
                   <h2>Episodes</h2>
                   <ul className="episode-list">
-                    {episodes.map((episode) => (
-                      <li key={episode.id} className="episode-item">
-                        <span
-                          className="material-symbols-outlined play-icon"
-                          onClick={() => setEpisode(episode)}
-                        >
-                          play_circle
-                        </span>
+                    {episodes.map((episode) => {
+                      const isCurrent = currentEpisode?.id === episode.id;
 
-                        <div className="episode-content">
-                          <h3>{episode.title}</h3>
-                          <p>{episode.description}</p>
-                        </div>
-                      </li>
-                    ))}
+                      const iconName =
+                        isCurrent && isPlaying ? "pause_circle" : "play_circle";
+
+                      const handlePlayClick = () => {
+                        if (isCurrent) {
+                          togglePlay();
+                        } else {
+                          setEpisode(episode);
+                        }
+                      };
+
+                      return (
+                        <li key={episode.id} className="episode-item">
+                          <span
+                            className="material-symbols-outlined play-icon"
+                            style={{ cursor: "pointer" }}
+                            onClick={handlePlayClick}
+                          >
+                            {iconName}
+                          </span>
+
+                          <div className="episode-content">
+                            <h3>{episode.title}</h3>
+                            <p>{episode.description}</p>
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </>

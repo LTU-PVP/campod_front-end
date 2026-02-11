@@ -1,16 +1,30 @@
 import type { ReactElement } from "react";
 import type { Show } from "../../types/show";
 import { Link } from "react-router";
+import { usePlayerStore } from "../../store/usePlayerStore";
 
 interface ShowCardProps {
   show: Show;
 }
 
 export const ShowCard = ({ show }: ShowCardProps): ReactElement => {
+  const { currentEpisode, isPlaying } = usePlayerStore();
+  const isThisShowPlaying =
+    isPlaying && currentEpisode?.collection_id === show.id;
+
   return (
     <Link to={`/podcast/${show.id}`} className="show-card-link">
       <article className="show-card">
-        <img src={"https://placehold.co/300x300"} className="show-card-image" />
+        <div className="image-container" style={{ position: "relative" }}>
+          <img
+            src={"https://placehold.co/300x300"}
+            className="show-card-image"
+          />
+
+          {isThisShowPlaying && (
+            <span className="playing-badge">Now Playing</span>
+          )}
+        </div>
 
         <div className="show-card-content">
           <h3 className="show-card-title">{show.name}</h3>
