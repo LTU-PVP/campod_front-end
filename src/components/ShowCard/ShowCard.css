@@ -3,13 +3,17 @@
   color: inherit;
   display: block;
 }
-
 .show-card {
   background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid #e5e5e5;
   padding: 16px;
   max-width: 300px;
+  cursor: pointer;
+}
+
+.show-card-link:hover .show-card {
+  background-color: #f9f9f9;
 }
 
 .show-card-image {
@@ -78,5 +82,9 @@
   .show-card {
     background-color: #161618;
     border: 1px solid #2b2c31;
+  }
+
+  .show-card-link:hover .show-card {
+    background-color: #1e1e22;
   }
 }

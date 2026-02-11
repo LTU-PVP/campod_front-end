@@ -3,12 +3,17 @@
 @import url("../features/login/Login.css");
 @import url("../features/login/LoginForm/LoginForm.css");
 
+@import url("../features/signup/Signup.css");
+
 @import url("../features/dashboard/Dashboard.css");
 @import url("../features/dashboard/Header/Header.css");
 @import url("../features/dashboard/CollectionSection/CollectionSection.css");
 
 @import url("../features/podcast/Podcast.css");
 
+@import url("../features/search/Search.css");
+
 @import url("../components/Logo/Logo.css");
 @import url("../components/ShowCard/ShowCard.css");
 @import url("../components/Player/Player.css");
+@import url("../components/Loading/Loading.css");

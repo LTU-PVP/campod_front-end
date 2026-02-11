@@ -152,17 +152,23 @@ export const Player = (): ReactElement => {
 
       <div className="player-content">
         <div className="player-info">
-          <img
-            src={currentEpisode?.imageUrl || "https://placehold.co/48x48"}
-            alt={currentEpisode?.title || ""}
-            className="player-avatar"
-          />
-          <div className="player-text">
-            <span className="player-title">{currentEpisode?.title || ""}</span>
-            <span className="player-subtitle">
-              {currentEpisode?.collection_name || ""}
-            </span>
-          </div>
+          {currentEpisode && (
+            <>
+              <img
+                src={currentEpisode?.imageUrl || "https://placehold.co/48x48"}
+                alt={currentEpisode?.title || ""}
+                className="player-avatar"
+              />
+              <div className="player-text">
+                <span className="player-title">
+                  {currentEpisode?.title || ""}
+                </span>
+                <span className="player-subtitle">
+                  {currentEpisode?.collection_name || ""}
+                </span>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="player-controls-group">

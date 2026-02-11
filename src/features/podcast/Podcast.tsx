@@ -3,6 +3,8 @@ import { Suspense, type ReactElement } from "react";
 import { Await, useLoaderData, useNavigate } from "react-router";
 import type { PodcastDetailResponse } from "../../types/show";
 import { usePlayerStore } from "../../store/usePlayerStore";
+import { Loading } from "../../components/Loading/Loading";
+import { ErrorState } from "../../components/ErrorState/ErrorState";
 
 export const Podcast = (): ReactElement => {
   const { collection } = useLoaderData<CollectionLoader>();
@@ -28,8 +30,11 @@ export const Podcast = (): ReactElement => {
         </div>
       </header>
       <main id="podcast-details" className="container">
-        <Suspense fallback={<div>Loading podcast...</div>}>
-          <Await resolve={collection}>
+        <Suspense fallback={<Loading />}>
+          <Await
+            resolve={collection}
+            errorElement={<ErrorState message="Error fetching podcast" />}
+          >
             {({ show, episodes }: PodcastDetailResponse) => (
               <>
                 <div className="podcast-information-container">

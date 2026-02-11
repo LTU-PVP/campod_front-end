@@ -4,6 +4,8 @@ import { Login } from "./features/login/Login";
 import { Dashboard } from "./features/dashboard/Dashboard";
 import { collectionLoader, collectionsLoader } from "./loaders";
 import { Podcast } from "./features/podcast/Podcast";
+import { Search } from "./features/search/Search";
+import { Signup } from "./features/signup/Signup";
 
 export const router = createBrowserRouter([
   {
@@ -16,11 +18,20 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
         loader: collectionsLoader,
       },
+      {
+        path: "search",
+        element: <Search />,
+        // loader: searchLoader,
+      },
       { path: "/podcast/:id", element: <Podcast />, loader: collectionLoader },
     ],
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
 ]);

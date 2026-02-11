@@ -10,7 +10,6 @@ export const Dashboard = (): ReactElement => {
   return (
     <>
       <Header />
-
       <main id="dashboard" className="container">
         <CollectionSection title="All shows" items={collections} />
       </main>

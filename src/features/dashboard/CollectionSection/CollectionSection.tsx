@@ -2,6 +2,8 @@ import { Suspense, type ReactElement } from "react";
 import { ShowCard } from "../../../components/ShowCard/ShowCard";
 import { Await } from "react-router";
 import type { Show } from "../../../types/show";
+import { Loading } from "../../../components/Loading/Loading";
+import { ErrorState } from "../../../components/ErrorState/ErrorState";
 
 interface CollectionSectionProps {
   title: string;
@@ -17,18 +19,20 @@ export const CollectionSection = ({
       className="collection-section"
       id={`collection-${title.toLowerCase().replace(/\s+/g, "-")}`}
     >
-      <h2>{title}</h2>
-      <Suspense fallback={<div>Loading {title}...</div>}>
+      <Suspense fallback={<Loading />}>
         <Await
           resolve={items}
-          errorElement={<p>Error loading shows. Please try again later.</p>}
+          errorElement={<ErrorState message="Error fetching podcasts" />}
         >
-          {(shows) => (
-            <div className="shows-grid">
-              {shows.map((show) => (
-                <ShowCard key={show.id} show={show} />
-              ))}
-            </div>
+          {(shows: Show[]) => (
+            <>
+              <h2 className="section-title">{title}</h2>
+              <div className="shows-grid fade-in">
+                {shows.map((show) => (
+                  <ShowCard key={show.id} show={show} />
+                ))}
+              </div>
+            </>
           )}
         </Await>
       </Suspense>
