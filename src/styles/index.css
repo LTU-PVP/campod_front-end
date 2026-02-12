@@ -1,9 +1,6 @@
 @import url("./base.css");
 
-@import url("../features/login/Login.css");
-@import url("../features/login/LoginForm/LoginForm.css");
-
-@import url("../features/signup/Signup.css");
+@import url("../features/auth/Auth.css");
 
 @import url("../features/dashboard/Dashboard.css");
 @import url("../features/dashboard/Header/Header.css");

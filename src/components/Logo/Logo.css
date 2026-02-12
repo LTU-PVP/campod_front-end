@@ -19,7 +19,6 @@
   color: white;
 }
 
-.login-logo-centered {
+.auth-logo-centered {
   justify-content: center;
-  margin-bottom: 2rem;
 }

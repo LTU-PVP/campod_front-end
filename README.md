@@ -19,7 +19,7 @@ React + TypeScript podcast browser and player built with Vite.
 
 ## Prerequisites
 
-- Node.js (recommend 18+)
+- Node.js (recommended: 18+)
 - npm (or yarn/pnpm)
 
 ## Getting Started
@@ -36,7 +36,7 @@ Run development server:
 npm run dev
 ```
 
-Build for production:
+Build for production (the build step runs `tsc -b` before `vite build` to emit type-checked output):
 
 ```bash
 npm run build
@@ -59,15 +59,15 @@ npm run lint
 - `src/` — application source
   - `src/api/podcast-service.ts` — API calls for fetching podcasts
   - `src/store/usePlayerStore.ts` — global player state (Zustand)
-  - `src/features/` — feature views and components (dashboard, podcast, search, login, signup)
+  - `src/features/` — feature folders
+    - `src/features/auth/` — login/signup UI and forms
+    - `src/features/dashboard/` — main dashboard and collection views
+    - `src/features/podcast/` — podcast detail view
+    - `src/features/search/` — search results and UI
   - `src/components/` — shared components (Input, Loading, Logo, Player, ShowCard)
 - `public/` — static assets
 - `index.html` — app entry
 - `vite.config.ts` — Vite configuration
-
-## Environment / Configuration
-
-- No required environment variables in the repository by default. If you add API keys or endpoints, document them here (e.g. `VITE_API_URL`).
 
 ## Acknowledgements
 
