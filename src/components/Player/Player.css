@@ -97,6 +97,28 @@
   height: 100%;
   background-color: #059666;
   transition: width 0.1s linear;
+  position: relative;
+}
+
+.progress-handle {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 14px;
+  height: 14px;
+  background-color: #056645;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s ease-in-out;
+}
+
+.progress-container:hover .progress-handle {
+  transform: translateY(-50%) scale(1);
+}
+
+.progress-container:hover {
+  height: 6px;
 }
 
 .time-display {

@@ -10,6 +10,11 @@
 
 @import url("../features/search/Search.css");
 
+@import url("../features/admin/AdminLayout.css");
+@import url("../features/admin/Sidebar/Sidebar.css");
+@import url("../features/admin/Podcasts/AdminPodcast.css");
+@import url("../features/admin/Podcasts/PodcastForm.css");
+
 @import url("../components/Logo/Logo.css");
 @import url("../components/ShowCard/ShowCard.css");
 @import url("../components/Player/Player.css");

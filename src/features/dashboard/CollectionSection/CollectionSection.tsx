@@ -24,16 +24,27 @@ export const CollectionSection = ({
           resolve={items}
           errorElement={<ErrorState message="Error fetching podcasts" />}
         >
-          {(shows: Show[]) => (
-            <>
-              <h2 className="section-title">{title}</h2>
-              <div className="shows-grid fade-in">
-                {shows.map((show) => (
-                  <ShowCard key={show.id} show={show} />
-                ))}
-              </div>
-            </>
-          )}
+          {(shows: Show[]) => {
+            if (shows.length === 0) {
+              return (
+                <div className="empty-state">
+                  <h2 className="section-title">{title}</h2>
+                  <p>No shows found in this collection.</p>
+                </div>
+              );
+            }
+
+            return (
+              <>
+                <h2 className="section-title">{title}</h2>
+                <div className="shows-grid fade-in">
+                  {shows.map((show) => (
+                    <ShowCard key={show.id} show={show} />
+                  ))}
+                </div>
+              </>
+            );
+          }}
         </Await>
       </Suspense>
     </section>

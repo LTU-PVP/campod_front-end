@@ -19,3 +19,9 @@ export interface PodcastDetailResponse {
   show: Show;
   episodes: Episode[];
 }
+
+export interface CreateShowRequest {
+  name: string;
+  description?: string;
+  creator_name?: string;
+}

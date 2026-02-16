@@ -14,6 +14,7 @@ export const Player = (): ReactElement => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isBuffering, setIsBuffering] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
@@ -96,6 +97,48 @@ export const Player = (): ReactElement => {
     }
   }, [isPlaying, setIsPlaying]);
 
+  const updateProgress = useCallback(
+    (clientX: number) => {
+      if (!progressBarRef.current || !audioRef.current) return;
+
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const clickPositionX = clientX - rect.left;
+      const width = rect.width;
+      const percentage = Math.max(0, Math.min(1, clickPositionX / width));
+
+      const newTime = percentage * duration;
+      setCurrentTime(newTime);
+
+      audioRef.current.currentTime = newTime;
+    },
+    [duration],
+  );
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) updateProgress(e.clientX);
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      window.addEventListener("mousemove", handleMouseMove as any);
+      window.addEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove as any);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, updateProgress]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    updateProgress(e.clientX);
+  };
+
   const handleToggle = useCallback(() => {
     if (!currentEpisode) return;
     togglePlay();
@@ -144,10 +187,9 @@ export const Player = (): ReactElement => {
         ref={progressBarRef}
         onClick={handleScrub}
       >
-        <div
-          className="progress-fill"
-          style={{ width: `${progressPercent}%` }}
-        />
+        <div className="progress-fill" style={{ width: `${progressPercent}%` }}>
+          <div className="progress-handle" />
+        </div>
       </div>
 
       <div className="player-content">

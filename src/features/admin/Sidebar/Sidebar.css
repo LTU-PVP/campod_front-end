@@ -1,0 +1,124 @@
+.admin-sidebar {
+  display: none;
+  flex-direction: column;
+  width: 300px;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e5e5;
+  padding-block: 1rem;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e5e5;
+  margin-block-end: 1rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-inline: 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  color: #1f2023;
+  text-decoration: none;
+  border-radius: 10px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f5f5f7;
+  color: #10b981;
+}
+
+.nav-link.active {
+  background-color: #e8f5f0;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.nav-link .material-symbols-outlined {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.sidebar-footer {
+  padding: 1rem 0.5rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.sidebar-footer .logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: #1f2023;
+  cursor: pointer;
+  border-radius: 10px;
+  font-family: inherit;
+}
+
+.sidebar-footer .logout-btn:hover {
+  background-color: #f5f5f7;
+  color: #ef4444;
+}
+
+.sidebar-footer .logout-btn .material-symbols-outlined {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .admin-sidebar {
+    display: flex;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .admin-sidebar {
+    background-color: #1d1d1f;
+    border-right-color: #424245;
+  }
+
+  .sidebar-header {
+    border-bottom-color: #424245;
+  }
+
+  .nav-link {
+    color: whitesmoke;
+  }
+
+  .nav-link:hover {
+    background-color: #424245;
+  }
+
+  .nav-link.active {
+    background-color: #1a3a35;
+  }
+
+  .sidebar-footer {
+    border-top-color: #424245;
+  }
+
+  .sidebar-footer .logout-btn {
+    color: whitesmoke;
+  }
+
+  .sidebar-footer .logout-btn:hover {
+    background-color: #424245;
+  }
+}

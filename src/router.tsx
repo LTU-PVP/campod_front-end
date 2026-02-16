@@ -6,6 +6,11 @@ import { collectionLoader, collectionsLoader } from "./loaders";
 import { Podcast } from "./features/podcast/Podcast";
 import { Search } from "./features/search/Search";
 import { Signup } from "./features/auth/Signup";
+import { AdminLayout } from "./features/admin/AdminLayout";
+import { AdminDashboard } from "./features/admin/Dashboard/AdminDashboard";
+import { AdminPodcasts } from "./features/admin/Podcasts/AdminPodcasts";
+import { AdminCreatePodcast } from "./features/admin/Podcasts/AdminCreatePodcast";
+import { AdminEditPodcast } from "./features/admin/Podcasts/AdminEditPodcast";
 
 export const router = createBrowserRouter([
   {
@@ -23,7 +28,36 @@ export const router = createBrowserRouter([
         element: <Search />,
         // loader: searchLoader,
       },
-      { path: "/podcast/:id", element: <Podcast />, loader: collectionLoader },
+      { path: "podcast/:id", element: <Podcast />, loader: collectionLoader },
+    ],
+  },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <AdminDashboard />,
+      },
+      {
+        path: "podcasts",
+        children: [
+          {
+            index: true,
+            element: <AdminPodcasts />,
+            loader: collectionsLoader,
+          },
+          {
+            path: "create",
+            element: <AdminCreatePodcast />,
+          },
+          {
+            path: ":id/edit",
+            element: <AdminEditPodcast />,
+            loader: collectionLoader,
+          },
+        ],
+      },
     ],
   },
   {

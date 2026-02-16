@@ -4,6 +4,10 @@
   gap: 0.75rem;
 }
 
+.logo-section h1 {
+  font-size: 1.8rem;
+}
+
 .logo-rectangle {
   width: 64px;
   height: 64px;
