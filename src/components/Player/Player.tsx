@@ -7,6 +7,7 @@ import {
   useCallback,
 } from "react";
 import { usePlayerStore } from "../../store/usePlayerStore";
+import { BASE_URL } from "../../api/podcast-service";
 
 export const Player = (): ReactElement => {
   const { currentEpisode, isPlaying, setIsPlaying, togglePlay } =
@@ -72,8 +73,7 @@ export const Player = (): ReactElement => {
     const audio = audioRef.current;
     setCurrentTime(0);
 
-    // audio.src = currentEpisode.file_path;
-    audio.src = "/white-noise.mp3";
+    audio.src = `${BASE_URL}/stream/${currentEpisode.id}`;
     audio.load();
 
     audio.play().catch((error) => {

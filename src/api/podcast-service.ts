@@ -4,7 +4,7 @@ import type {
   Show,
 } from "../types/show";
 
-const BASE_URL = "http://localhost:5001";
+export const BASE_URL = "http://localhost:5001";
 
 const request = async <T>(
   endpoint: string,
