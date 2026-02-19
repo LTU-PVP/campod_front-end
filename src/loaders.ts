@@ -1,9 +1,9 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { getCollection, getCollections } from "./api/podcast-service";
-import type { PodcastDetailResponse, Show } from "./types/show";
+import type { CollectionsResponse, PodcastDetailResponse } from "./types/show";
 
 export interface CollectionsLoader {
-  collections: Promise<Show[]>;
+  collections: Promise<CollectionsResponse>;
 }
 
 export interface CollectionLoader {

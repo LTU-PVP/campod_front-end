@@ -2,26 +2,15 @@ import { useState, type ReactElement, type SubmitEventHandler } from "react";
 import { Input } from "../../components/Input";
 import { Logo } from "../../components/Logo/Logo";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 interface SignupFormProps {
-  onSubmit: (
-    firstName: string,
-    lastName: string,
-    username: string,
-    email: string,
-    password: string,
-  ) => Promise<void>;
+  onSubmit: (username: string, password: string) => Promise<void>;
 }
 
 export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
-    firstName: "",
-    lastName: "",
     username: "",
-    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -31,11 +20,6 @@ export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
   const handleOnSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setError(null);
-
-    if (!EMAIL_REGEX.test(values.email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
 
     if (values.password.length < 8) {
       setError("Password must be at least 8 characters long");
@@ -49,13 +33,7 @@ export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
 
     try {
       setIsLoading(true);
-      await onSubmit(
-        values.firstName,
-        values.lastName,
-        values.username,
-        values.email,
-        values.password,
-      );
+      await onSubmit(values.username, values.password);
     } catch (err) {
       setError("Account creation failed.");
     } finally {
@@ -68,7 +46,7 @@ export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
       ...values,
       [e.target.name]: e.target.value,
     });
-    setError(null); // Clear error when user types
+    setError(null);
   };
 
   return (
@@ -77,28 +55,6 @@ export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
         <Logo className="auth-logo-centered" />
 
         <form className="auth-form signup" onSubmit={handleOnSubmit}>
-          <div className="name-wrapper">
-            <Input
-              label="First name"
-              name="firstName"
-              type="text"
-              value={values.firstName}
-              onChange={handleChange}
-              autoFocus={true}
-              disabled={false}
-              autoComplete=""
-            />
-            <Input
-              label="Last name"
-              name="lastName"
-              type="text"
-              value={values.lastName}
-              onChange={handleChange}
-              autoFocus={false}
-              disabled={false}
-              autoComplete=""
-            />
-          </div>
           <Input
             label="Username"
             name="username"
@@ -108,16 +64,6 @@ export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
             autoFocus={false}
             disabled={false}
             autoComplete=""
-          />
-          <Input
-            label="Email address"
-            name="email"
-            type="email"
-            value={values.email}
-            onChange={handleChange}
-            autoFocus={false}
-            disabled={false}
-            autoComplete="email"
           />
           <Input
             label="Password"

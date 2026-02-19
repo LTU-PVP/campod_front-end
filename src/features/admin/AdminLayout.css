@@ -6,9 +6,9 @@
 }
 
 .admin-main {
+  flex: 1;
   min-width: 0;
   background-color: #f9fafb;
-  overflow-y: auto;
 }
 
 .admin-content {

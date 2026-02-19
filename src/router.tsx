@@ -11,6 +11,7 @@ import { AdminDashboard } from "./features/admin/Dashboard/AdminDashboard";
 import { AdminPodcasts } from "./features/admin/Podcasts/AdminPodcasts";
 import { AdminCreatePodcast } from "./features/admin/Podcasts/AdminCreatePodcast";
 import { AdminEditPodcast } from "./features/admin/Podcasts/AdminEditPodcast";
+import { AdminPodcastDetails } from "./features/admin/Podcasts/AdminPodcastDetails";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,11 @@ export const router = createBrowserRouter([
             index: true,
             element: <AdminPodcasts />,
             loader: collectionsLoader,
+          },
+          {
+            path: ":id",
+            element: <AdminPodcastDetails />,
+            loader: collectionLoader,
           },
           {
             path: "create",

@@ -2,8 +2,6 @@ import { useState, type ReactElement, type SubmitEventHandler } from "react";
 import { Logo } from "../../components/Logo/Logo";
 import { Input } from "../../components/Input";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => Promise<void>;
 }
@@ -12,7 +10,7 @@ export const LoginForm = ({ onSubmit }: LoginFormProps): ReactElement => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -29,17 +27,12 @@ export const LoginForm = ({ onSubmit }: LoginFormProps): ReactElement => {
   const handleOnSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    if (!EMAIL_REGEX.test(values.email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
     try {
       setIsLoading(true);
       setError(null);
-      await onSubmit(values.email, values.password);
+      await onSubmit(values.username, values.password);
     } catch (err) {
-      setError("Invalid email or password");
+      setError("Invalid username or password");
     } finally {
       setIsLoading(false);
     }
@@ -51,10 +44,10 @@ export const LoginForm = ({ onSubmit }: LoginFormProps): ReactElement => {
 
       <form className="auth-form login" onSubmit={handleOnSubmit}>
         <Input
-          label="Email address"
-          name="email"
-          type="email"
-          value={values.email}
+          label="Username"
+          name="username"
+          type="text"
+          value={values.username}
           onChange={handleChange}
           autoFocus={true}
           autoComplete="username"

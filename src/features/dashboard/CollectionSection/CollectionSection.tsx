@@ -1,13 +1,13 @@
 import { Suspense, type ReactElement } from "react";
 import { ShowCard } from "../../../components/ShowCard/ShowCard";
 import { Await } from "react-router";
-import type { Show } from "../../../types/show";
+import type { CollectionsResponse, Show } from "../../../types/show";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
 
 interface CollectionSectionProps {
   title: string;
-  items: Promise<Show[]>;
+  items: Promise<CollectionsResponse>;
 }
 
 export const CollectionSection = ({
@@ -24,7 +24,10 @@ export const CollectionSection = ({
           resolve={items}
           errorElement={<ErrorState message="Error fetching podcasts" />}
         >
-          {(shows: Show[]) => {
+          {(resolvedData: CollectionsResponse) => {
+            // Extract the actual array from the paginated object
+            const { collections: shows } = resolvedData;
+
             if (shows.length === 0) {
               return (
                 <div className="empty-state">

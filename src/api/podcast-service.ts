@@ -1,4 +1,5 @@
 import type {
+  CollectionsResponse,
   CreateShowRequest,
   PodcastDetailResponse,
   Show,
@@ -20,7 +21,8 @@ const request = async <T>(
   return res.json() as Promise<T>;
 };
 
-export const getCollections = () => request<Show[]>("/collections");
+export const getCollections = (page: number = 1) =>
+  request<CollectionsResponse>(`/collections?page=${page}`);
 
 export const getCollection = (id: number) =>
   request<PodcastDetailResponse>(`/collections/${id}`);
