@@ -1,12 +1,17 @@
 import { useState, type ReactElement, type SubmitEventHandler } from "react";
 import { Logo } from "../../components/Logo/Logo";
 import { Input } from "../../components/Input";
+import { Link } from "react-router";
 
 interface LoginFormProps {
-  onSubmit: (email: string, password: string) => Promise<void>;
+  onSubmit: (username: string, password: string) => Promise<void>;
+  successMessage?: string;
 }
 
-export const LoginForm = ({ onSubmit }: LoginFormProps): ReactElement => {
+export const LoginForm = ({
+  onSubmit,
+  successMessage,
+}: LoginFormProps): ReactElement => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
@@ -43,6 +48,10 @@ export const LoginForm = ({ onSubmit }: LoginFormProps): ReactElement => {
       <Logo className="auth-logo-centered" />
 
       <form className="auth-form login" onSubmit={handleOnSubmit}>
+        {successMessage && (
+          <div className="success-message">{successMessage}</div>
+        )}
+
         <Input
           label="Username"
           name="username"
@@ -68,7 +77,7 @@ export const LoginForm = ({ onSubmit }: LoginFormProps): ReactElement => {
         </button>
 
         <p className="auth-footer">
-          Don't have an account? <a href="/signup">Sign up</a>
+          Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
       </form>
     </div>

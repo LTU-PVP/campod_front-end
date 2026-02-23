@@ -1,9 +1,14 @@
 import type { ReactElement } from "react";
 import { SignupForm } from "./SignupForm";
+import { register } from "../../api/podcast-service";
+import { useNavigate } from "react-router";
 
 export const Signup = (): ReactElement => {
+  const navigate = useNavigate();
+
   const handleOnSubmit = async (username: string, password: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await register(username, password);
+    navigate("/login", { state: { accountCreated: true } });
   };
 
   return (

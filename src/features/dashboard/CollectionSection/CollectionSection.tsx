@@ -25,7 +25,6 @@ export const CollectionSection = ({
           errorElement={<ErrorState message="Error fetching podcasts" />}
         >
           {(resolvedData: CollectionsResponse) => {
-            // Extract the actual array from the paginated object
             const { collections: shows } = resolvedData;
 
             if (shows.length === 0) {

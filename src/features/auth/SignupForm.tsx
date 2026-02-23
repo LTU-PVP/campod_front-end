@@ -1,6 +1,7 @@
 import { useState, type ReactElement, type SubmitEventHandler } from "react";
 import { Input } from "../../components/Input";
 import { Logo } from "../../components/Logo/Logo";
+import { Link } from "react-router";
 
 interface SignupFormProps {
   onSubmit: (username: string, password: string) => Promise<void>;
@@ -50,52 +51,50 @@ export const SignupForm = ({ onSubmit }: SignupFormProps): ReactElement => {
   };
 
   return (
-    <>
-      <div className="auth-wrapper">
-        <Logo className="auth-logo-centered" />
+    <div className="auth-wrapper">
+      <Logo className="auth-logo-centered" />
 
-        <form className="auth-form signup" onSubmit={handleOnSubmit}>
-          <Input
-            label="Username"
-            name="username"
-            type="text"
-            value={values.username}
-            onChange={handleChange}
-            autoFocus={false}
-            disabled={false}
-            autoComplete=""
-          />
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            value={values.password}
-            onChange={handleChange}
-            autoFocus={false}
-            disabled={false}
-            autoComplete="new-password"
-          />
-          <Input
-            label="Confirm password"
-            name="confirmPassword"
-            type="password"
-            value={values.confirmPassword}
-            onChange={handleChange}
-            autoFocus={false}
-            disabled={false}
-            autoComplete="new-password"
-          />
+      <form className="auth-form signup" onSubmit={handleOnSubmit}>
+        <Input
+          label="Username"
+          name="username"
+          type="text"
+          value={values.username}
+          onChange={handleChange}
+          autoFocus={false}
+          disabled={false}
+          autoComplete=""
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          value={values.password}
+          onChange={handleChange}
+          autoFocus={false}
+          disabled={false}
+          autoComplete="new-password"
+        />
+        <Input
+          label="Confirm password"
+          name="confirmPassword"
+          type="password"
+          value={values.confirmPassword}
+          onChange={handleChange}
+          autoFocus={false}
+          disabled={false}
+          autoComplete="new-password"
+        />
 
-          {error && <div className="error-message">{error}</div>}
+        {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" disabled={isFormEmpty || isLoading}>
-            {isLoading ? "Creating account..." : "Sign up"}
-          </button>
-          <p className="auth-footer">
-            Already have an account? <a href="/login">Sign in</a>
-          </p>
-        </form>
-      </div>
-    </>
+        <button type="submit" disabled={isFormEmpty || isLoading}>
+          {isLoading ? "Creating account..." : "Sign up"}
+        </button>
+        <p className="auth-footer">
+          Already have an account? <Link to="/login">Sign in</Link>
+        </p>
+      </form>
+    </div>
   );
 };

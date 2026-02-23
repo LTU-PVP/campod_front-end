@@ -32,6 +32,26 @@ body {
   width: 100%;
 }
 
+.success-message {
+  background-color: #d7f7e1;
+  color: #166534;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.error-message {
+  background-color: #fff1f2;
+  color: #9f1239;
+  border: 1px solid #fecdd3;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .container {
     padding-inline: 3rem;
@@ -54,5 +74,17 @@ body {
   body {
     background-color: #131315;
     color: whitesmoke;
+  }
+
+  .success-message {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .error-message {
+    background-color: rgba(244, 63, 94, 0.1);
+    color: #fb7185;
+    border: 1px solid rgba(244, 63, 94, 0.3);
   }
 }
