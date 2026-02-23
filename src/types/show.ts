@@ -3,6 +3,8 @@ export interface Show {
   name: string;
   description: string;
   creator_name: string | null;
+  cover_image_path: string | null;
+  category: string | null;
 }
 
 export interface Episode {
@@ -12,7 +14,7 @@ export interface Episode {
   description: string;
   file_path: string;
   title: string;
-  imageUrl: string | null;
+  category: string | null;
 }
 
 export interface CollectionsResponse {

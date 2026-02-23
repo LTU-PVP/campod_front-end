@@ -16,10 +16,7 @@ export const ShowCard = ({ show }: ShowCardProps): ReactElement => {
     <Link to={`/podcast/${show.id}`} className="show-card-link">
       <article className="show-card">
         <div className="image-container" style={{ position: "relative" }}>
-          <img
-            src={"https://placehold.co/300x300"}
-            className="show-card-image"
-          />
+          <img src={show.cover_image_path ?? ""} className="show-card-image" />
 
           {isThisShowPlaying && (
             <span className="playing-badge">Now Playing</span>
@@ -32,8 +29,8 @@ export const ShowCard = ({ show }: ShowCardProps): ReactElement => {
           <p className="show-card-description">{show.description}</p>
 
           <div className="show-card-footer">
-            <span className="show-card-tag">CATEGORY</span>
-            <span className="show-card-meta">0 episodes</span>
+            <span className="show-card-tag">{show.category}</span>
+            <span className="show-card-meta"></span>
           </div>
         </div>
       </article>

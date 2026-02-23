@@ -11,7 +11,15 @@ const request = async <T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> => {
-  const res = await fetch(`${BASE_URL}${endpoint}`, options);
+  const res = await fetch(`${BASE_URL}${endpoint}`, {
+    credentials: "include",
+    ...options,
+  });
+
+  if (res.status === 401) {
+    window.location.href = "/login";
+    throw new Error("Unauthorized");
+  }
 
   if (!res.ok) {
     const errorBody = await res.text().catch(() => "No error body");
@@ -20,6 +28,23 @@ const request = async <T>(
 
   return res.json() as Promise<T>;
 };
+
+export const login = (username: string, password: string) =>
+  request<{ message: string }>("/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+
+export const logout = () =>
+  request<{ message: string }>("/logout", { method: "POST" });
+
+export const register = (username: string, password: string) =>
+  request<{ message: string }>("/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
 
 export const getCollections = (page: number = 1) =>
   request<CollectionsResponse>(`/collections?page=${page}`);

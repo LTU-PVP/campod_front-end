@@ -197,7 +197,7 @@ export const Player = (): ReactElement => {
           {currentEpisode && (
             <>
               <img
-                src={currentEpisode?.imageUrl || "https://placehold.co/48x48"}
+                src={"https://placehold.co/48x48"}
                 alt={currentEpisode?.title || ""}
                 className="player-avatar"
               />

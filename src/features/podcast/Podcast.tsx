@@ -39,7 +39,7 @@ export const Podcast = (): ReactElement => {
               <>
                 <div className="podcast-information-container">
                   <img
-                    src={"https://placehold.co/300x300"}
+                    src={show.cover_image_path ?? ""}
                     className="podcast-image"
                     alt={show.name}
                   />
