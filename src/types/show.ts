@@ -38,3 +38,11 @@ export interface CreateShowRequest {
   description?: string;
   creator_name?: string;
 }
+
+export interface SearchResponse {
+  episodes: Episode[];
+  total: number;
+  pages: number;
+  current_page: number;
+  applied_filters: any;
+}

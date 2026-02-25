@@ -2,7 +2,11 @@ import { createBrowserRouter } from "react-router";
 import App from "./App";
 import { Login } from "./features/auth/Login";
 import { Dashboard } from "./features/dashboard/Dashboard";
-import { collectionLoader, collectionsLoader } from "./loaders";
+import {
+  collectionLoader,
+  collectionsLoader,
+  searchEpisodesLoader,
+} from "./loaders";
 import { Podcast } from "./features/podcast/Podcast";
 import { Search } from "./features/search/Search";
 import { Signup } from "./features/auth/Signup";
@@ -27,7 +31,7 @@ export const router = createBrowserRouter([
       {
         path: "search",
         element: <Search />,
-        // loader: searchLoader,
+        loader: searchEpisodesLoader,
       },
       { path: "podcast/:id", element: <Podcast />, loader: collectionLoader },
     ],

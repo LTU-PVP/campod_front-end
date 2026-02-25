@@ -1,7 +1,7 @@
 import { Suspense, type ReactElement } from "react";
 import { ShowCard } from "../../../components/ShowCard/ShowCard";
 import { Await } from "react-router";
-import type { CollectionsResponse, Show } from "../../../types/show";
+import type { CollectionsResponse } from "../../../types/show";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
 

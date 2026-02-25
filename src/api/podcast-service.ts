@@ -72,3 +72,6 @@ export const updateCollection = (
     },
     body: JSON.stringify(data),
   });
+
+export const searchEpisodes = (query: string, page: number = 1) =>
+  request<any>(`/episodes?search=${encodeURIComponent(query)}&page=${page}`);
