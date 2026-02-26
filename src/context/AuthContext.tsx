@@ -1,8 +1,20 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-import { login as apiLogin, logout as apiLogout } from "../api/podcast-service";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+import {
+  getCurrentUser,
+  login as loginApi,
+  logout as logoutApi,
+} from "../api/podcast-service";
+import type { User } from "../types/show";
 
 interface AuthContextType {
-  isLoggedIn: boolean;
+  user: User | null;
+  isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -10,20 +22,41 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const data = await getCurrentUser();
+        setUser(data);
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
+  useEffect(() => {
+    const handleForceLogout = () => setUser(null);
+    window.addEventListener("auth:logout", handleForceLogout);
+    return () => window.removeEventListener("auth:logout", handleForceLogout);
+  }, []);
 
   const login = async (username: string, password: string) => {
-    await apiLogin(username, password);
-    setIsLoggedIn(true);
+    await loginApi(username, password);
+    const data = await getCurrentUser();
+    setUser(data);
   };
 
   const logout = async () => {
-    await apiLogout();
-    setIsLoggedIn(false);
+    await logoutApi();
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -31,6 +64,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 };

@@ -3,22 +3,49 @@ import type {
   CreateShowRequest,
   PodcastDetailResponse,
   Show,
+  User,
 } from "../types/show";
 
 export const BASE_URL = "http://localhost:5001";
+
+let isRefreshing = false;
+let refreshQueue: Array<() => void> = [];
 
 const request = async <T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> => {
   const res = await fetch(`${BASE_URL}${endpoint}`, {
-    credentials: "include",
     ...options,
+    credentials: "include",
   });
 
-  if (res.status === 401) {
-    window.location.href = "/login";
-    throw new Error("Unauthorized");
+  if (res.status === 401 && !["/refresh", "/login"].includes(endpoint)) {
+    if (endpoint === "/me") {
+      throw new Error("No session");
+    }
+
+    if (isRefreshing) {
+      return new Promise<T>((resolve, reject) => {
+        refreshQueue.push(() =>
+          request<T>(endpoint, options).then(resolve).catch(reject),
+        );
+      });
+    }
+
+    isRefreshing = true;
+    try {
+      await refreshToken();
+      refreshQueue.forEach((cb) => cb());
+      refreshQueue = [];
+      return request<T>(endpoint, options);
+    } catch {
+      refreshQueue = [];
+      window.dispatchEvent(new Event("auth:logout"));
+      throw new Error("Session expired");
+    } finally {
+      isRefreshing = false;
+    }
   }
 
   if (!res.ok) {
@@ -29,15 +56,23 @@ const request = async <T>(
   return res.json() as Promise<T>;
 };
 
+export const getCurrentUser = () => request<User | null>("/me");
+
+export const logout = () =>
+  request<{ message: string }>("/logout", {
+    method: "POST",
+    headers: { "X-CSRF-TOKEN": getCSRFToken() },
+  });
+
 export const login = (username: string, password: string) =>
   request<{ message: string }>("/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
     body: JSON.stringify({ username, password }),
   });
-
-export const logout = () =>
-  request<{ message: string }>("/logout", { method: "POST" });
 
 export const register = (username: string, password: string) =>
   request<{ message: string }>("/register", {
@@ -57,6 +92,7 @@ export const createCollection = (data: CreateShowRequest) =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
     },
     body: JSON.stringify(data),
   });
@@ -69,9 +105,34 @@ export const updateCollection = (
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
     },
     body: JSON.stringify(data),
   });
 
 export const searchEpisodes = (query: string, page: number = 1) =>
   request<any>(`/episodes?search=${encodeURIComponent(query)}&page=${page}`);
+
+export const refreshToken = () =>
+  request<{ message: string }>("/refresh", {
+    method: "POST",
+    headers: { "X-CSRF-TOKEN": getCSRFRefreshToken() },
+  });
+
+function getCSRFRefreshToken(): string {
+  return (
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrf_refresh_token="))
+      ?.split("=")[1] ?? ""
+  );
+}
+
+function getCSRFToken(): string {
+  return (
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrf_access_token="))
+      ?.split("=")[1] ?? ""
+  );
+}

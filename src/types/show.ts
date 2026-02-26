@@ -1,3 +1,7 @@
+export interface User {
+  id: number;
+  username: string;
+}
 export interface Show {
   id: number;
   name: string;

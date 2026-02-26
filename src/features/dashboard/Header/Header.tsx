@@ -1,12 +1,19 @@
 import type { ReactElement, SubmitEventHandler } from "react";
 import { Logo } from "../../../components/Logo/Logo";
-import { useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
+import { useAuth } from "../../../context/AuthContext";
 
 export const Header = (): ReactElement => {
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const query = searchParams.get("q") || "";
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   const handleSearch: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -24,7 +31,15 @@ export const Header = (): ReactElement => {
         <div className="header-flex">
           <Logo />
           <nav>
-            <button className="logout-btn">Logout</button>
+            {user ? (
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            ) : (
+              <Link to="/login" className="logout-btn">
+                Login
+              </Link>
+            )}
           </nav>
         </div>
         <form className="search-form" id="search-form" onSubmit={handleSearch}>
@@ -36,7 +51,7 @@ export const Header = (): ReactElement => {
               name="query"
               id="query"
               type="text"
-              placeholder="Search podcasts, authors or topics..."
+              placeholder="Search eposides..."
               key={query}
               defaultValue={query}
             />

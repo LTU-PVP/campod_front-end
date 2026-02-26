@@ -7,6 +7,7 @@ export const Login = (): ReactElement => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const message = location.state?.accountCreated
     ? "Account created! You can now sign in."
@@ -14,7 +15,7 @@ export const Login = (): ReactElement => {
 
   const handleOnSubmit = async (username: string, password: string) => {
     await login(username, password);
-    navigate("/");
+    navigate(from, { replace: true });
   };
 
   return (
