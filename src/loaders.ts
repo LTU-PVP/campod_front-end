@@ -24,9 +24,14 @@ export interface SearchEpisodesLoader {
   currentPage: number;
 }
 
-export const collectionsLoader = async (): Promise<CollectionsLoader> => {
+export const collectionsLoader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<CollectionsLoader> => {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get("page") || "1");
+
   return {
-    collections: getCollections(),
+    collections: getCollections(page),
   };
 };
 

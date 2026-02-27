@@ -4,6 +4,7 @@ import { Await } from "react-router";
 import type { CollectionsResponse } from "../../../types/show";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
+import { Pagination } from "../../../components/Pagination/Pagination";
 
 interface CollectionSectionProps {
   title: string;
@@ -44,6 +45,11 @@ export const CollectionSection = ({
                     <ShowCard key={show.id} show={show} />
                   ))}
                 </div>
+
+                <Pagination
+                  currentPage={resolvedData.current_page}
+                  totalPages={resolvedData.pages}
+                />
               </>
             );
           }}
