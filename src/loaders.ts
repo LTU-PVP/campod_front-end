@@ -2,13 +2,21 @@ import type { LoaderFunctionArgs } from "react-router";
 import {
   getCollection,
   getCollections,
+  getRecentEpisodes,
+  getUsers,
   searchEpisodes,
 } from "./api/podcast-service";
 import type {
   CollectionsResponse,
   PodcastDetailResponse,
   SearchResponse,
-} from "./types/show";
+  UsersResponse,
+} from "./types";
+
+export interface DashboardLoader {
+  collections: Promise<CollectionsResponse>;
+  episodes: Promise<SearchResponse>;
+}
 
 export interface CollectionsLoader {
   collections: Promise<CollectionsResponse>;
@@ -24,14 +32,42 @@ export interface SearchEpisodesLoader {
   currentPage: number;
 }
 
+export interface UsersLoader {
+  users: Promise<UsersResponse>;
+}
+
+export const dashboardLoader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<DashboardLoader> => {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get("page") || "1");
+  const limit = Math.min(parseInt(url.searchParams.get("limit") || "4"), 50);
+
+  return {
+    collections: getCollections(page),
+    episodes: getRecentEpisodes(limit),
+  };
+};
+
 export const collectionsLoader = async ({
   request,
 }: LoaderFunctionArgs): Promise<CollectionsLoader> => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1");
+  const sort = url.searchParams.get("sort") as
+    | "newest"
+    | "oldest"
+    | "name"
+    | null;
+  const category = url.searchParams.get("category") || undefined;
+  const user_id = url.searchParams.get("user_id");
 
   return {
-    collections: getCollections(page),
+    collections: getCollections(page, {
+      ...(sort && { sort }),
+      ...(category && { category }),
+      ...(user_id && { user_id: parseInt(user_id) }),
+    }),
   };
 };
 
@@ -43,6 +79,18 @@ export const collectionLoader = async ({
   if (isNaN(id)) throw new Error("Invalid podcast id");
   return {
     collection: getCollection(id),
+  };
+};
+
+export const recentEpisodesLoader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<RecentEpisodesLoader> => {
+  const url = new URL(request.url);
+  const limit = Math.min(parseInt(url.searchParams.get("limit") || "10"), 50);
+
+  return {
+    episodes: getRecentEpisodes(limit),
+    limit,
   };
 };
 
@@ -78,4 +126,15 @@ export const searchEpisodesLoader = async ({
   } catch (error) {
     throw error;
   }
+};
+
+export const usersLoader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<UsersLoader> => {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get("page") || "1");
+
+  return {
+    users: getUsers(page),
+  };
 };

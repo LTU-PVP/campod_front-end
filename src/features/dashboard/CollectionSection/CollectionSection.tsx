@@ -1,15 +1,22 @@
 import { Suspense, type ReactElement } from "react";
 import { ShowCard } from "../../../components/ShowCard/ShowCard";
 import { Await } from "react-router";
-import type { CollectionsResponse } from "../../../types";
+import type { CollectionsResponse, SearchResponse } from "../../../types";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
 import { Pagination } from "../../../components/Pagination/Pagination";
+import EpisodeCard from "../../../components/EpisodeCard/EpisodeCard";
+
+type SectionData = CollectionsResponse | SearchResponse;
 
 interface CollectionSectionProps {
   title: string;
-  items: Promise<CollectionsResponse>;
+  items: Promise<SectionData>;
 }
+
+const isCollectionsResponse = (data: any): data is CollectionsResponse => {
+  return data && typeof data === "object" && "collections" in data;
+};
 
 export const CollectionSection = ({
   title,
@@ -23,16 +30,18 @@ export const CollectionSection = ({
       <Suspense fallback={<Loading />}>
         <Await
           resolve={items}
-          errorElement={<ErrorState message="Error fetching podcasts" />}
+          errorElement={<ErrorState message="Error fetching content" />}
         >
-          {(resolvedData: CollectionsResponse) => {
-            const { collections: shows } = resolvedData;
+          {(resolvedData: SectionData) => {
+            const isEmpty = isCollectionsResponse(resolvedData)
+              ? resolvedData.collections.length === 0
+              : resolvedData.episodes.length === 0;
 
-            if (shows.length === 0) {
+            if (isEmpty) {
               return (
                 <div className="empty-state">
                   <h2 className="section-title">{title}</h2>
-                  <p>No shows found in this collection.</p>
+                  <p>No items found.</p>
                 </div>
               );
             }
@@ -41,11 +50,14 @@ export const CollectionSection = ({
               <>
                 <h2 className="section-title">{title}</h2>
                 <div className="shows-grid fade-in">
-                  {shows.map((show) => (
-                    <ShowCard key={show.id} show={show} />
-                  ))}
+                  {isCollectionsResponse(resolvedData)
+                    ? resolvedData.collections.map((show) => (
+                        <ShowCard key={show.id} show={show} />
+                      ))
+                    : resolvedData.episodes.map((episode) => (
+                        <EpisodeCard key={episode.id} episode={episode} />
+                      ))}
                 </div>
-
                 <Pagination
                   currentPage={resolvedData.current_page}
                   totalPages={resolvedData.pages}

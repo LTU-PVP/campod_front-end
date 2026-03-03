@@ -1,6 +1,7 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import type { ReactElement } from "react";
 import { Logo } from "../../../components/Logo/Logo";
+import { useAuth } from "../../../context/AuthContext";
 
 export const Sidebar = (): ReactElement => {
   const location = useLocation();
@@ -9,6 +10,14 @@ export const Sidebar = (): ReactElement => {
     if (path === "/admin") return location.pathname === "/admin";
 
     return location.pathname.startsWith(path);
+  };
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   return (
@@ -25,10 +34,17 @@ export const Sidebar = (): ReactElement => {
           <span className="material-symbols-outlined">podcasts</span>
           <span>Podcasts</span>
         </Link>
+        <Link
+          to="/admin/users"
+          className={`nav-link ${isActive("/admin/users") ? "active" : ""}`}
+        >
+          <span className="material-symbols-outlined">people</span>
+          <span>Users</span>
+        </Link>
       </nav>
 
       <div className="sidebar-footer">
-        <button className="logout-btn">
+        <button className="logout-btn" onClick={handleLogout}>
           <span className="material-symbols-outlined">logout</span>
           <span>Logout</span>
         </button>

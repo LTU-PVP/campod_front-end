@@ -2,7 +2,9 @@ import type {
   CollectionsResponse,
   CreateShowRequest,
   PodcastDetailResponse,
+  SearchResponse,
   Show,
+  UpdateShowRequest,
   User,
 } from "../types";
 
@@ -81,8 +83,82 @@ export const register = (username: string, password: string) =>
     body: JSON.stringify({ username, password }),
   });
 
-export const getCollections = (page: number = 1) =>
-  request<CollectionsResponse>(`/collections?page=${page}`);
+export const getCollections = (
+  page: number = 1,
+  filters?: {
+    sort?: "newest" | "oldest" | "name";
+    category?: string;
+    user_id?: number;
+    limit?: number;
+  },
+) => {
+  const params = new URLSearchParams({ page: String(page) });
+  if (filters?.sort) params.set("sort", filters.sort);
+  if (filters?.category) params.set("category", filters.category);
+  if (filters?.user_id) params.set("user_id", String(filters.user_id));
+  if (filters?.limit) params.set("limit", String(filters.limit));
+
+  return request<CollectionsResponse>(`/collections?${params.toString()}`);
+};
+
+export const deleteCollection = (id: number | string) =>
+  request<{ message: string }>(`/collections/${id}`, {
+    method: "DELETE",
+    headers: {
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
+  });
+
+export const updateCollection = (
+  id: number | string,
+  data: UpdateShowRequest,
+) =>
+  request<Show>(`/collections/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
+    body: JSON.stringify(data),
+  });
+
+export const getRecentEpisodes = (limit = 10): Promise<SearchResponse> =>
+  request<SearchResponse>(`/episodes/recent?limit=${limit}`);
+
+export const getUsers = (page: number = 1, limit: number = 50) =>
+  request<{
+    users: User[];
+    total: number;
+    pages: number;
+    current_page: number;
+  }>(`/users?page=${page}&limit=${limit}`);
+
+export const createUser = (data: {
+  username: string;
+  password: string;
+  role?: string;
+}) =>
+  request<User>("/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
+    body: JSON.stringify(data),
+  });
+
+export const updateUser = (
+  id: number | string,
+  data: { username?: string; password?: string; role?: string },
+) =>
+  request<User>(`/users/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
+    body: JSON.stringify(data),
+  });
 
 export const getCollection = (id: number) =>
   request<PodcastDetailResponse>(`/collections/${id}`);
@@ -97,27 +173,20 @@ export const createCollection = (data: CreateShowRequest) =>
     body: JSON.stringify(data),
   });
 
-export const updateCollection = (
-  id: number | string,
-  data: CreateShowRequest,
-) =>
-  request<Show>(`/collections/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRF-TOKEN": getCSRFToken(),
-    },
-    body: JSON.stringify(data),
-  });
-
 export const searchEpisodes = (query: string, page: number = 1) =>
   request<any>(`/episodes?search=${encodeURIComponent(query)}&page=${page}`);
 
-export const refreshToken = () =>
-  request<{ message: string }>("/refresh", {
+export const refreshToken = async (): Promise<void> => {
+  const res = await fetch(`${BASE_URL}/refresh`, {
     method: "POST",
+    credentials: "include",
     headers: { "X-CSRF-TOKEN": getCSRFRefreshToken() },
   });
+
+  if (!res.ok) {
+    throw new Error("Refresh failed");
+  }
+};
 
 function getCSRFRefreshToken(): string {
   return (

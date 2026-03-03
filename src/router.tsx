@@ -5,6 +5,7 @@ import { Dashboard } from "./features/dashboard/Dashboard";
 import {
   collectionLoader,
   collectionsLoader,
+  dashboardLoader,
   searchEpisodesLoader,
 } from "./loaders";
 import { Podcast } from "./features/podcast/Podcast";
@@ -16,7 +17,9 @@ import { AdminPodcasts } from "./features/admin/Podcasts/AdminPodcasts";
 import { AdminCreatePodcast } from "./features/admin/Podcasts/AdminCreatePodcast";
 import { AdminEditPodcast } from "./features/admin/Podcasts/AdminEditPodcast";
 import { AdminPodcastDetails } from "./features/admin/Podcasts/AdminPodcastDetails";
+import { AdminUsers } from "./features/admin/Users/AdminUsers";
 import { ProtectedRoute } from "./components/ProtectedRouter";
+import { usersLoader } from "./loaders";
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +27,7 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <div>Oops! Something went wrong.</div>,
     children: [
-      { index: true, element: <Dashboard />, loader: collectionsLoader },
+      { index: true, element: <Dashboard />, loader: dashboardLoader },
       { path: "search", element: <Search />, loader: searchEpisodesLoader },
       { path: "podcast/:id", element: <Podcast />, loader: collectionLoader },
     ],
@@ -39,6 +42,30 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <AdminDashboard />,
+          },
+          {
+            path: "users",
+            children: [
+              {
+                index: true,
+                element: <AdminUsers />,
+                loader: usersLoader,
+              },
+              {
+                path: ":id",
+                //element: <AdminPodcastDetails />,
+                //loader: collectionLoader,
+              },
+              {
+                path: "create",
+                //element: <AdminCreatePodcast />,
+              },
+              {
+                path: ":id/edit",
+                //element: <AdminEditPodcast />,
+                //loader: collectionLoader,
+              },
+            ],
           },
           {
             path: "podcasts",
