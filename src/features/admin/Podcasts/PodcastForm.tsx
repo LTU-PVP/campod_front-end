@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from "react";
 import { Input } from "../../../components/Input";
 import { Textarea } from "../../../components/Textarea";
-import type { CreateShowRequest } from "../../../types/show";
+import type { CreateShowRequest } from "../../../types";
 
 interface PodcastFormProps {
   onSubmit: (data: CreateShowRequest) => Promise<void>;

@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
-import type { CreateShowRequest } from "../../../types/show";
 import { createCollection } from "../../../api/podcast-service";
 import { PodcastForm } from "./PodcastForm";
+import type { CreateShowRequest } from "../../../types";
 
 export const AdminCreatePodcast = (): ReactElement => {
   const handleOnSubmit = async (data: CreateShowRequest) => {

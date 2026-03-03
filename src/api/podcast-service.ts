@@ -4,7 +4,7 @@ import type {
   PodcastDetailResponse,
   Show,
   User,
-} from "../types/show";
+} from "../types";
 
 export const BASE_URL = "http://localhost:5001";
 

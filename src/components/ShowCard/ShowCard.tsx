@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import type { Show } from "../../types/show";
+import type { Show } from "../../types";
 import { Link } from "react-router";
 import { usePlayerStore } from "../../store/usePlayerStore";
 

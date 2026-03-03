@@ -3,7 +3,7 @@ import { Await, Link, useLoaderData } from "react-router";
 import type { CollectionsLoader } from "../../../loaders";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
-import type { CollectionsResponse } from "../../../types/show";
+import type { CollectionsResponse } from "../../../types";
 
 export const AdminPodcasts = (): ReactElement => {
   const { collections } = useLoaderData<CollectionsLoader>();

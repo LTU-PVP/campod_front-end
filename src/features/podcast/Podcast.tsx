@@ -1,7 +1,7 @@
 import type { CollectionLoader } from "../../loaders";
 import { Suspense, type ReactElement } from "react";
 import { Await, useLoaderData, useNavigate } from "react-router";
-import type { PodcastDetailResponse } from "../../types/show";
+import type { PodcastDetailResponse } from "../../types";
 import { usePlayerStore } from "../../store/usePlayerStore";
 import { Loading } from "../../components/Loading/Loading";
 import { ErrorState } from "../../components/ErrorState/ErrorState";

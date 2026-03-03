@@ -10,7 +10,7 @@ import {
   login as loginApi,
   logout as logoutApi,
 } from "../api/podcast-service";
-import type { User } from "../types/show";
+import type { User } from "../types";
 
 interface AuthContextType {
   user: User | null;

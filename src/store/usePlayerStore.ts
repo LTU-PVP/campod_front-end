@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Episode } from "../types/show";
+import type { Episode } from "../types";
 
 interface PlayerState {
   currentEpisode: Episode | null;

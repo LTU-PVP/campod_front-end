@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { Link } from "react-router";
 
 interface LogoProps {
   className?: string;
@@ -6,11 +7,17 @@ interface LogoProps {
 
 export const Logo = ({ className = "" }: LogoProps): ReactElement => {
   return (
-    <div className={`logo-section ${className}`}>
-      <div className="logo-rectangle">
-        <span className="material-symbols-outlined">headphones</span>
+    <Link
+      to="/"
+      className={`logo-link ${className}`}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+      <div className="logo-section">
+        <div className="logo-rectangle">
+          <span className="material-symbols-outlined">headphones</span>
+        </div>
+        <h1>Podcasts</h1>
       </div>
-      <h1>Podcasts</h1>
-    </div>
+    </Link>
   );
 };

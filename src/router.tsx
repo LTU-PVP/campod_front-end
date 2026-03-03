@@ -16,6 +16,7 @@ import { AdminPodcasts } from "./features/admin/Podcasts/AdminPodcasts";
 import { AdminCreatePodcast } from "./features/admin/Podcasts/AdminCreatePodcast";
 import { AdminEditPodcast } from "./features/admin/Podcasts/AdminEditPodcast";
 import { AdminPodcastDetails } from "./features/admin/Podcasts/AdminPodcastDetails";
+import { ProtectedRoute } from "./components/ProtectedRouter";
 
 export const router = createBrowserRouter([
   {
@@ -23,59 +24,50 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <div>Oops! Something went wrong.</div>,
     children: [
-      {
-        index: true,
-        element: <Dashboard />,
-        loader: collectionsLoader,
-      },
-      {
-        path: "search",
-        element: <Search />,
-        loader: searchEpisodesLoader,
-      },
+      { index: true, element: <Dashboard />, loader: collectionsLoader },
+      { path: "search", element: <Search />, loader: searchEpisodesLoader },
       { path: "podcast/:id", element: <Podcast />, loader: collectionLoader },
     ],
   },
   {
     path: "admin",
-    element: <AdminLayout />,
+    element: <ProtectedRoute allowedRoles={["admin"]} />,
     children: [
       {
-        index: true,
-        element: <AdminDashboard />,
-      },
-      {
-        path: "podcasts",
+        element: <AdminLayout />,
         children: [
           {
             index: true,
-            element: <AdminPodcasts />,
-            loader: collectionsLoader,
+            element: <AdminDashboard />,
           },
           {
-            path: ":id",
-            element: <AdminPodcastDetails />,
-            loader: collectionLoader,
-          },
-          {
-            path: "create",
-            element: <AdminCreatePodcast />,
-          },
-          {
-            path: ":id/edit",
-            element: <AdminEditPodcast />,
-            loader: collectionLoader,
+            path: "podcasts",
+            children: [
+              {
+                index: true,
+                element: <AdminPodcasts />,
+                loader: collectionsLoader,
+              },
+              {
+                path: ":id",
+                element: <AdminPodcastDetails />,
+                loader: collectionLoader,
+              },
+              {
+                path: "create",
+                element: <AdminCreatePodcast />,
+              },
+              {
+                path: ":id/edit",
+                element: <AdminEditPodcast />,
+                loader: collectionLoader,
+              },
+            ],
           },
         ],
       },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <Signup /> },
 ]);

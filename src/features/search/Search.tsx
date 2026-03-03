@@ -2,7 +2,7 @@ import { Suspense, type ReactElement } from "react";
 import { Header } from "../dashboard/Header/Header";
 import { Await, Link, useLoaderData } from "react-router";
 import type { SearchEpisodesLoader } from "../../loaders";
-import type { Episode, SearchResponse } from "../../types/show";
+import type { Episode, SearchResponse } from "../../types";
 import { usePlayerStore } from "../../store/usePlayerStore";
 
 export const Search = (): ReactElement => {

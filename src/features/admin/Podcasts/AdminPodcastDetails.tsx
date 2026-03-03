@@ -1,10 +1,5 @@
 import type { ReactElement } from "react";
-import type {
-  CreateShowRequest,
-  PodcastDetailResponse,
-} from "../../../types/show";
-import { createCollection } from "../../../api/podcast-service";
-import { PodcastForm } from "./PodcastForm";
+import type { PodcastDetailResponse } from "../../../types";
 import type { CollectionLoader } from "../../../loaders";
 import { Await, useLoaderData } from "react-router";
 
