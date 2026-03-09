@@ -25,8 +25,6 @@ export const AdminPodcastDetails = (): ReactElement => {
 
   return (
     <div className="admin-podcast-container">
-      <h2>Podcast Management</h2>
-
       <Suspense fallback={<Loading />}>
         <Await
           resolve={collection}
@@ -73,14 +71,6 @@ export const AdminPodcastDetails = (): ReactElement => {
               </div>
 
               <section className="admin-add-episode-section">
-                <hr className="section-divider" />
-                <div className="form-header">
-                  <h3>Upload New Episode</h3>
-                  <p className="subtitle">
-                    Add a new audio file to {show.name}
-                  </p>
-                </div>
-
                 <div className="form-container">
                   <EpisodeForm
                     collectionId={show.id}

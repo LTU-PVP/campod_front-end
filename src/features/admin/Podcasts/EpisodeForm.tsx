@@ -14,7 +14,7 @@ export const EpisodeForm = ({
   onSubmit,
   initialValues,
   isEdit = false,
-  collectionId, // Pass this in from the parent component (the current show)
+  collectionId,
 }: EpisodeFormProps & { collectionId: number }): ReactElement => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
