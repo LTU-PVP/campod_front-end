@@ -13,10 +13,7 @@ export const EpisodeCard = ({ episode }: EpisodeCardProps): ReactElement => {
   const isThisEpisodePlaying = isPlaying && currentEpisode?.id === episode.id;
 
   return (
-    <Link
-      to={`/podcast/${episode.collection_id}/episode/${episode.id}`}
-      className="show-card-link"
-    >
+    <Link to={`/podcast/${episode.collection_id}`} className="show-card-link">
       <article className="show-card">
         <div className="show-card-content">
           {isThisEpisodePlaying && (

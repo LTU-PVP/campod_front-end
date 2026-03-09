@@ -82,18 +82,6 @@ export const collectionLoader = async ({
   };
 };
 
-export const recentEpisodesLoader = async ({
-  request,
-}: LoaderFunctionArgs): Promise<RecentEpisodesLoader> => {
-  const url = new URL(request.url);
-  const limit = Math.min(parseInt(url.searchParams.get("limit") || "10"), 50);
-
-  return {
-    episodes: getRecentEpisodes(limit),
-    limit,
-  };
-};
-
 export const searchEpisodesLoader = async ({
   request,
 }: LoaderFunctionArgs): Promise<SearchEpisodesLoader> => {

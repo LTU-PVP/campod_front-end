@@ -22,11 +22,7 @@ const request = async <T>(
     credentials: "include",
   });
 
-  if (res.status === 401 && !["/refresh", "/login"].includes(endpoint)) {
-    if (endpoint === "/me") {
-      throw new Error("No session");
-    }
-
+  if (res.status === 401 && endpoint !== "/login") {
     if (isRefreshing) {
       return new Promise<T>((resolve, reject) => {
         refreshQueue.push(() =>
@@ -38,15 +34,17 @@ const request = async <T>(
     isRefreshing = true;
     try {
       await refreshToken();
+      isRefreshing = false;
+
+      const retryOriginal = request<T>(endpoint, options);
       refreshQueue.forEach((cb) => cb());
       refreshQueue = [];
-      return request<T>(endpoint, options);
-    } catch {
+      return retryOriginal;
+    } catch (err) {
+      isRefreshing = false;
       refreshQueue = [];
       window.dispatchEvent(new Event("auth:logout"));
-      throw new Error("Session expired");
-    } finally {
-      isRefreshing = false;
+      throw err;
     }
   }
 
@@ -176,11 +174,52 @@ export const createCollection = (data: CreateShowRequest) =>
 export const searchEpisodes = (query: string, page: number = 1) =>
   request<any>(`/episodes?search=${encodeURIComponent(query)}&page=${page}`);
 
+export const uploadAudio = (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return request<{ file_path: string; file_url: string }>("/upload-audio", {
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const createEpisode = (data: {
+  title: string;
+  description?: string;
+  collection_id: number;
+  file_path: string;
+  category?: string;
+}) =>
+  request<any>("/episode", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
+    body: JSON.stringify(data),
+  });
+
+export const updateEpisode = (
+  id: number,
+  data: { title?: string; description?: string; category?: string },
+) =>
+  request<any>(`/episode/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": getCSRFToken(),
+    },
+    body: JSON.stringify(data),
+  });
+
 export const refreshToken = async (): Promise<void> => {
   const res = await fetch(`${BASE_URL}/refresh`, {
     method: "POST",
     credentials: "include",
-    headers: { "X-CSRF-TOKEN": getCSRFRefreshToken() },
+    headers: {
+      "X-REFRESH-CSRF-TOKEN": getCSRFRefreshToken(),
+    },
   });
 
   if (!res.ok) {

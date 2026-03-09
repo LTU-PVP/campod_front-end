@@ -2,7 +2,7 @@ import { Suspense, type ReactElement } from "react";
 import { Await, Link, useLoaderData } from "react-router";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
-import type { CollectionsResponse, UsersResponse } from "../../../types";
+import type { UsersResponse } from "../../../types";
 import type { UsersLoader } from "../../../loaders";
 
 export const AdminUsers = (): ReactElement => {

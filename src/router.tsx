@@ -7,6 +7,7 @@ import {
   collectionsLoader,
   dashboardLoader,
   searchEpisodesLoader,
+  usersLoader,
 } from "./loaders";
 import { Podcast } from "./features/podcast/Podcast";
 import { Search } from "./features/search/Search";
@@ -19,7 +20,6 @@ import { AdminEditPodcast } from "./features/admin/Podcasts/AdminEditPodcast";
 import { AdminPodcastDetails } from "./features/admin/Podcasts/AdminPodcastDetails";
 import { AdminUsers } from "./features/admin/Users/AdminUsers";
 import { ProtectedRoute } from "./components/ProtectedRouter";
-import { usersLoader } from "./loaders";
 
 export const router = createBrowserRouter([
   {
@@ -58,12 +58,12 @@ export const router = createBrowserRouter([
               },
               {
                 path: "create",
-                //element: <AdminCreatePodcast />,
+                //element: <AdminCreateUser />,
               },
               {
                 path: ":id/edit",
-                //element: <AdminEditPodcast />,
-                //loader: collectionLoader,
+                //element: <AdminEditUser />,
+                //loader: userLoader,
               },
             ],
           },

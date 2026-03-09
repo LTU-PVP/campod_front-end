@@ -44,3 +44,17 @@ export interface UsersResponse {
   pages: number;
   current_page: number;
 }
+
+export interface CreateUserRequest {
+  username: string;
+  password: string;
+  role?: "admin" | "creator" | "user";
+}
+
+export interface CreateEpisodeRequest {
+  title: string;
+  file_path: string;
+  collection_id: number;
+  description?: string;
+  category?: string;
+}

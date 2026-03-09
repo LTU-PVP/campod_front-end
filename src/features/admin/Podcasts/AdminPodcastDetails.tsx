@@ -1,16 +1,32 @@
 import { Suspense, type ReactElement } from "react";
-import type { PodcastDetailResponse } from "../../../types";
+import { Await, useLoaderData, useNavigate } from "react-router";
+import type {
+  PodcastDetailResponse,
+  CreateEpisodeRequest,
+} from "../../../types";
 import type { CollectionLoader } from "../../../loaders";
-import { Await, useLoaderData } from "react-router";
 import { Loading } from "../../../components/Loading/Loading";
 import { ErrorState } from "../../../components/ErrorState/ErrorState";
+import { EpisodeForm } from "./EpisodeForm";
+import { createEpisode } from "../../../api/podcast-service";
 
 export const AdminPodcastDetails = (): ReactElement => {
   const { collection } = useLoaderData<CollectionLoader>();
+  const navigate = useNavigate();
+
+  const handleCreateEpisode = async (data: CreateEpisodeRequest) => {
+    try {
+      await createEpisode(data);
+      navigate(".", { replace: true });
+    } catch (err) {
+      throw err;
+    }
+  };
 
   return (
-    <>
-      <h2>Podcasts</h2>
+    <div className="admin-podcast-container">
+      <h2>Podcast Management</h2>
+
       <Suspense fallback={<Loading />}>
         <Await
           resolve={collection}
@@ -26,28 +42,56 @@ export const AdminPodcastDetails = (): ReactElement => {
                 />
                 <article className="podcast-info">
                   <h1>{show.name}</h1>
-                  <p>{show.creator_name}</p>
+                  <p>
+                    <strong>Creator:</strong> {show.creator_name}
+                  </p>
                   <p>{show.description}</p>
                 </article>
               </div>
 
               <div className="podcast-episodes-container">
-                <h3>Episodes</h3>
+                <h3>Episodes ({episodes.length})</h3>
                 <ul className="episode-list">
-                  {episodes.map((episode) => (
-                    <li key={episode.id} className="episode-item">
-                      <div className="episode-content">
-                        <h4>{episode.title}</h4>
-                        <p>{episode.description}</p>
-                      </div>
-                    </li>
-                  ))}
+                  {episodes.length > 0 ? (
+                    episodes.map((episode) => (
+                      <li key={episode.id} className="episode-item">
+                        <div className="episode-content">
+                          <h4>{episode.title}</h4>
+                          <p>{episode.description}</p>
+                          {episode.category && (
+                            <span className="badge">{episode.category}</span>
+                          )}
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <p className="no-data">
+                      No episodes found for this podcast.
+                    </p>
+                  )}
                 </ul>
               </div>
+
+              <section className="admin-add-episode-section">
+                <hr className="section-divider" />
+                <div className="form-header">
+                  <h3>Upload New Episode</h3>
+                  <p className="subtitle">
+                    Add a new audio file to {show.name}
+                  </p>
+                </div>
+
+                <div className="form-container">
+                  <EpisodeForm
+                    collectionId={show.id}
+                    onSubmit={handleCreateEpisode}
+                  />
+                </div>
+              </section>
             </>
           )}
         </Await>
       </Suspense>
-    </>
+    </div>
   );
 };
